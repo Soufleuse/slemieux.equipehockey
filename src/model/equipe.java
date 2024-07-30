@@ -4,11 +4,11 @@ package model;
  * equipe
  */
 public class equipe {
-    private String NomEquipe;
-    private String Ville;
-    private int AnneeDebut;   // int = non-nullable
-    private Integer AnneeFin; // Integer = nullable
-    private Integer EstDevenueEquipe;
+    private String NomEquipe = "";
+    private String Ville = "";
+    private int AnneeDebut = 0;   // int = non-nullable
+    private Integer AnneeFin = 0; // Integer = nullable
+    private Integer EstDevenueEquipe = 0;
 
     public String getNomEquipe() { return NomEquipe; }
     public void setNomEquipe(String nomEquipe) { this.NomEquipe = nomEquipe; }

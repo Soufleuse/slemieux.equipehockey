@@ -4,12 +4,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.util.Callback;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -84,16 +87,35 @@ public class Controller {
 
         var listeTemp = obtenirListeEquipePourComboBox(txtNomEquipe.getText(), txtVille.getText());
         cboEstDevenuEquipe.setItems(listeTemp);
+        
+        Callback <ListView<equipe>, ListCell<equipe>> cellFactory = new Callback <ListView<equipe>, ListCell<equipe>> () {
+            @Override public ListCell<equipe> call(ListView<equipe> l) {
+                return new ListCell<equipe>() {
+                    @Override protected void updateItem(equipe item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item == null || empty) {
+                            setGraphic(null);
+                        } else {
+                            setText(item.getNomEquipe() + " " + item.getVille());
+                        }
+                    }
+                };
+            }
+        };
 
-        /*cboEstDevenuEquipe.getSelectionModel().select(-1);
+        cboEstDevenuEquipe.setButtonCell(cellFactory.call(null));
+        cboEstDevenuEquipe.setCellFactory(cellFactory);
+
+        cboEstDevenuEquipe.getSelectionModel().select(-1);
         if(monEquipe.getEstDevenueEquipe() != null) {
             cboEstDevenuEquipe.getSelectionModel().select(monEquipe.getEstDevenueEquipe());
-        }*/
+        }
     }
 
     private ObservableList<equipe> obtenirListeEquipePourComboBox(String nomEquipe, String ville) {
         ObservableList<equipe> listeLocaleEquipes = FXCollections.observableArrayList();
         
+        listeLocaleEquipes.add(new equipe());
         for (int i = 0; i < listeEquipe.size(); i++) {
             if (!(listeEquipe.get(i).getNomEquipe().equals(nomEquipe) && listeEquipe.get(i).getVille().equals(ville))) {
                 listeLocaleEquipes.add(listeEquipe.get(i));
