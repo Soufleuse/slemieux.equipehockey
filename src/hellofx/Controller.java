@@ -21,7 +21,7 @@ import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
 import model.equipe;
-import service.lireequipe;
+import service.gererEquipe;
 
 public class Controller {
 
@@ -33,6 +33,7 @@ public class Controller {
     @FXML private TextField txtVille;
     @FXML private Label lblAnneeDebut;
     @FXML private TextField txtAnneeDebut;
+    @FXML private Label lblErreurAnneeDebut;
     @FXML private Label lblAnneeFin;
     @FXML private TextField txtAnneeFin;
     @FXML private Label lblEstDevenuEquipe;
@@ -41,13 +42,14 @@ public class Controller {
     private List<equipe> listeEquipe;
 
     public void initialize() {
+        lblErreurAnneeDebut.setText("");
         maGrille.getStyleClass().add("grid");
         maGrille.getColumnConstraints().add(new ColumnConstraints(250));
         maGrille.getColumnConstraints().add(new ColumnConstraints(250));
         tvwListeEquipe.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        lireequipe maLecture = new lireequipe();
-        listeEquipe = maLecture.lireEquipe();
+        gererEquipe maLecture = new gererEquipe();
+        listeEquipe = maLecture.listeEquipe();
         maLecture = null;
 
         ObservableList<equipe> listeEquipeObservable = FXCollections.observableArrayList(listeEquipe);
@@ -66,7 +68,22 @@ public class Controller {
 
     @FXML private void ajouterEquipe(ActionEvent event) {
         event.consume();
-        System.out.println("Ajout de l'équipe en construction");
+        lblErreurAnneeDebut.setText("");
+        try {
+            int monAnneeDebut = Integer.parseInt(txtAnneeDebut.getText());
+            equipe monAjout = new equipe(txtNomEquipe.getText(), txtVille.getText(), monAnneeDebut);
+            tvwListeEquipe.getItems().add(monAjout);
+            gererEquipe monEcriture = new gererEquipe();
+            monEcriture.ajouterEquipe(monAjout);
+            monEcriture = null;
+        }
+        catch (NumberFormatException e) {
+            txtAnneeDebut.requestFocus();
+            lblErreurAnneeDebut.setText("L'année de début doit être numérique.");
+        }
+        catch (Exception machin) {
+            System.out.println(machin.getMessage());
+        }
     }
 
     @FXML private void modifierEquipe(ActionEvent event) {

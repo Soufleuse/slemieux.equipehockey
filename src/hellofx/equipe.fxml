@@ -31,6 +31,7 @@
         <TextField fx:id="txtVille" GridPane.columnIndex="1" GridPane.rowIndex="2" />
         <Label fx:id="lblAnneeDebut" GridPane.columnIndex="0" GridPane.rowIndex="3" text="Année de début" />
         <TextField fx:id="txtAnneeDebut" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <Label fx:id="lblErreurAnneeDebut" GridPane.columnIndex="2" GridPane.rowIndex="3" />
         <Label fx:id="lblAnneeFin" GridPane.columnIndex="0" GridPane.rowIndex="4" text="Année de fin" />
         <TextField fx:id="txtAnneeFin" GridPane.columnIndex="1" GridPane.rowIndex="4" />
         <Label fx:id="lblEstDevenuEquipe" GridPane.columnIndex="0" GridPane.rowIndex="5" text="Est devenue équipe" />

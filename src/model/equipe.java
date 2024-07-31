@@ -6,9 +6,19 @@ package model;
 public class equipe {
     private String NomEquipe = "";
     private String Ville = "";
-    private int AnneeDebut = 0;   // int = non-nullable
-    private Integer AnneeFin = 0; // Integer = nullable
-    private Integer EstDevenueEquipe = 0;
+    private int AnneeDebut = 0;      // int = non-nullable
+    private Integer AnneeFin = null; // Integer = nullable
+    private Integer EstDevenueEquipe = null;
+
+    public equipe() {}
+
+    public equipe(String pNomEquipe, String pVille, int pAnneeDebut) {
+        this.NomEquipe = pNomEquipe;
+        this.Ville = pVille;
+        this.AnneeDebut = pAnneeDebut;
+        this.AnneeFin = null;
+        this.EstDevenueEquipe = null;
+    }
 
     public String getNomEquipe() { return NomEquipe; }
     public void setNomEquipe(String nomEquipe) { this.NomEquipe = nomEquipe; }
