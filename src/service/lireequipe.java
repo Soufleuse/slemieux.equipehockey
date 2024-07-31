@@ -17,8 +17,10 @@ public class lireequipe {
 
     public List<equipe> lireEquipe() {
         List<equipe> listeEquipe = new ArrayList<equipe>();
+        Connection con = null;
+
         try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/LigueHockey", "lemste", "Misty@00");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/LigueHockey", "lemste", "Misty@00");
             
             Statement st = con.createStatement();
             String sql = ("SELECT * FROM Equipe;");
@@ -36,13 +38,21 @@ public class lireequipe {
                 if(monDevenuEquipe != 0) monEquipe.setEstDevenueEquipe(monDevenuEquipe);
                 listeEquipe.add(monEquipe);
             }
-            
-            con.close();
         }
         catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        finally {
+            if (con != null) {
+                try {
+                    con.close();
+                }
+                catch (SQLException ex) {
+                    System.out.println(String.format("Erreur sur le close de la connection; message : ", ex.getMessage()));
+                }
+            }
         }
 
         return listeEquipe;
