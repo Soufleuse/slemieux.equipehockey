@@ -4,6 +4,7 @@ package model;
  * equipe
  */
 public class equipe {
+    private int Id = 0;
     private String NomEquipe = "";
     private String Ville = "";
     private int AnneeDebut = 0;      // int = non-nullable
@@ -20,6 +21,8 @@ public class equipe {
         this.EstDevenueEquipe = null;
     }
 
+    public int getId() { return Id; }
+    public void setId(int pId) { this.Id = pId; }
     public String getNomEquipe() { return NomEquipe; }
     public void setNomEquipe(String nomEquipe) { this.NomEquipe = nomEquipe; }
     public String getVille() { return Ville; }
