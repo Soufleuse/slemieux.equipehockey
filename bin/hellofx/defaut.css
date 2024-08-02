@@ -7,8 +7,3 @@
 .combo-box {
     -fx-min-width: 175;
 }
-
-.hbox {
-    -fx-padding: 10;
-    -fx-alignment: center;
-}

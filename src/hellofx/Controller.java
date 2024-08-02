@@ -8,6 +8,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.ColumnConstraints;
@@ -16,7 +17,6 @@ import javafx.util.Callback;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
@@ -29,21 +29,29 @@ public class Controller {
     @FXML private TableView<equipe> tvwListeEquipe;
     @FXML private Label lblNomEquipe;
     @FXML private TextField txtNomEquipe;
+    @FXML private Label lblErreurNomEquipe;
     @FXML private Label lblVille;
     @FXML private TextField txtVille;
+    @FXML private Label lblErreurVille;
     @FXML private Label lblAnneeDebut;
     @FXML private TextField txtAnneeDebut;
     @FXML private Label lblErreurAnneeDebut;
     @FXML private Label lblAnneeFin;
     @FXML private TextField txtAnneeFin;
+    @FXML private Label lblErreurAnneeFin;
     @FXML private Label lblEstDevenuEquipe;
     @FXML private ComboBox<equipe> cboEstDevenuEquipe;
 
     private List<equipe> listeEquipe;
 
     public void initialize() {
+        lblErreurNomEquipe.setText("");
+        lblErreurVille.setText("");
         lblErreurAnneeDebut.setText("");
+        lblErreurAnneeFin.setText("");
+
         maGrille.getStyleClass().add("grid");
+        maGrille.getColumnConstraints().add(new ColumnConstraints(150));
         maGrille.getColumnConstraints().add(new ColumnConstraints(250));
         maGrille.getColumnConstraints().add(new ColumnConstraints(250));
         tvwListeEquipe.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -68,22 +76,53 @@ public class Controller {
 
     @FXML private void ajouterEquipe(ActionEvent event) {
         event.consume();
+        boolean estValide = true;
+        int monAnneeDebut = 0;
+
+        lblErreurNomEquipe.setText("");
+        lblErreurVille.setText("");
         lblErreurAnneeDebut.setText("");
-        try {
-            int monAnneeDebut = Integer.parseInt(txtAnneeDebut.getText());
+        lblErreurAnneeFin.setText("");
+
+        if (txtNomEquipe.getText().isBlank()) {
+            estValide = false;
+            txtNomEquipe.requestFocus();
+            lblErreurNomEquipe.setText("Le nom de l'équipe ne doit pas être vide.");
+            lblErreurNomEquipe.setTooltip(new Tooltip("Le nom de l'équipe ne doit pas être vide."));
+        }
+
+        if (txtVille.getText().isBlank()) {
+            estValide = false;
+            lblErreurVille.setText("Le nom de la ville ne doit pas être vide.");
+            lblErreurVille.setTooltip(new Tooltip("Le nom de la ville ne doit pas être vide."));
+        }
+
+        if (txtAnneeDebut.getText().isBlank()) {
+            estValide = false;
+            txtAnneeDebut.requestFocus();
+            lblErreurAnneeDebut.setText("L'année de début doit être numérique.");
+            lblErreurAnneeDebut.setTooltip(new Tooltip("L'année de début doit être numérique."));
+        } else {
+            try {
+                monAnneeDebut = Integer.parseInt(txtAnneeDebut.getText());
+            }
+            catch (NumberFormatException e) {
+                estValide = false;
+                txtAnneeDebut.requestFocus();
+                lblErreurAnneeDebut.setText("L'année de début doit être numérique.");
+                lblErreurAnneeDebut.setTooltip(new Tooltip("L'année de début doit être numérique."));
+            }
+            catch (Exception machin) {
+                System.out.println(machin.getMessage());
+            }
+        }
+
+        if (estValide) {
             equipe monAjout = new equipe(txtNomEquipe.getText(), txtVille.getText(), monAnneeDebut);
             tvwListeEquipe.getItems().add(monAjout);
             gererEquipe monEcriture = new gererEquipe();
             monEcriture.ajouterEquipe(monAjout);
-            monEcriture = null;
-        }
-        catch (NumberFormatException e) {
-            txtAnneeDebut.requestFocus();
-            lblErreurAnneeDebut.setText("L'année de début doit être numérique.");
-        }
-        catch (Exception machin) {
-            System.out.println(machin.getMessage());
-        }
+            monEcriture = null;}
     }
 
     @FXML private void modifierEquipe(ActionEvent event) {

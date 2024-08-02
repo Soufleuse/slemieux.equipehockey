@@ -35,6 +35,7 @@ public class gererEquipe {
             ResultSet rs = st.executeQuery(sql);
             while(rs.next()) {
                 equipe monEquipe = new equipe();
+                monEquipe.setId(rs.getInt("Id"));
                 monEquipe.setNomEquipe(rs.getString("NomEquipe"));
                 monEquipe.setVille(rs.getString("Ville"));
                 monEquipe.setAnneeDebut(rs.getInt("AnneeDebut"));
@@ -141,6 +142,57 @@ public class gererEquipe {
                     con.close();
                 }
                 catch (SQLException ex) {
+                    System.out.println(String.format("Erreur sur le close de la connection; message : ", ex.getMessage()));
+                }
+            }
+        }
+
+        return retour;
+    }
+
+    public boolean modifierEquipe (equipe pEquipe) {
+        boolean retour = true;
+        Connection con = null;
+
+        try {
+            con = DriverManager.getConnection(urlBD, "lemste", "Misty@00");
+            
+            String sql = ("UPDATE Equipe set NomEquipe = ?, Ville = ?, AnneeDebut = ?, AnneeFin = ?, EstDevenueEquipe = ? where Id = ?;");
+            PreparedStatement st = con.prepareStatement(sql);
+            
+            st.setString(1, pEquipe.getNomEquipe());
+            st.setString(2, pEquipe.getVille());
+            st.setInt(3, pEquipe.getAnneeDebut());
+
+            if (pEquipe.getAnneeFin() == null) {
+                st.setInt(4, 0);
+            } else {
+                st.setInt(4, pEquipe.getAnneeFin());
+            }
+
+            if (pEquipe.getEstDevenueEquipe() == null) {
+                st.setInt(5, 0);
+            } else {
+                st.setInt(5, pEquipe.getEstDevenueEquipe());
+            }
+
+            st.setInt(6, pEquipe.getId());
+
+            st.executeUpdate();
+        }
+        catch (SQLException ex) {
+            retour = false;
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        finally {
+            if (con != null) {
+                try {
+                    con.close();
+                }
+                catch (SQLException ex) {
+                    retour = false;
                     System.out.println(String.format("Erreur sur le close de la connection; message : ", ex.getMessage()));
                 }
             }
