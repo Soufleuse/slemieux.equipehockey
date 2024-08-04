@@ -1,6 +1,6 @@
 package service;
 
-import model.equipe;
+import model.Equipe;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,8 +23,8 @@ public class gererEquipe {
      * 
      * @return La liste des équipes lues.
      */
-    public List<equipe> listeEquipe() {
-        List<equipe> listeEquipe = new ArrayList<equipe>();
+    public List<Equipe> listeEquipe() {
+        List<Equipe> listeEquipe = new ArrayList<Equipe>();
         Connection con = null;
 
         try {
@@ -34,7 +34,7 @@ public class gererEquipe {
             String sql = ("SELECT * FROM Equipe;");
             ResultSet rs = st.executeQuery(sql);
             while(rs.next()) {
-                equipe monEquipe = new equipe();
+                Equipe monEquipe = new Equipe();
                 monEquipe.setId(rs.getInt("Id"));
                 monEquipe.setNomEquipe(rs.getString("NomEquipe"));
                 monEquipe.setVille(rs.getString("Ville"));
@@ -73,7 +73,7 @@ public class gererEquipe {
      * @param pEquipe L'équipe à ajouter
      * @return True si l'équipe a été ajoutée; false autrement.
      */
-    public boolean ajouterEquipe(equipe pEquipe) {
+    public boolean ajouterEquipe(Equipe pEquipe) {
         boolean retour = true;
         Connection con = null;
 

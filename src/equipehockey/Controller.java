@@ -1,4 +1,4 @@
-package hellofx;
+package equipehockey;
 
 import javafx.fxml.FXML;
 
@@ -6,36 +6,31 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.input.MouseEvent;
 
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 
-import javafx.util.Callback;
 import javafx.util.StringConverter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.List;
 
-import model.equipe;
+import model.Equipe;
 import service.gererEquipe;
 
 public class Controller {
 
     @FXML private GridPane maGrille;
-    @FXML private TableView<equipe> tvwListeEquipe;
+    @FXML private TableView<Equipe> tvwListeEquipe;
     @FXML private Label lblNomEquipe;
     @FXML private TextField txtNomEquipe;
     @FXML private Label lblErreurNomEquipe;
@@ -49,7 +44,7 @@ public class Controller {
     @FXML private TextField txtAnneeFin;
     @FXML private Label lblErreurAnneeFin;
 
-    private List<equipe> listeEquipe;
+    private List<Equipe> listeEquipe;
 
     /**
      * Effectue les initialisations du contrôleurs.
@@ -75,27 +70,27 @@ public class Controller {
         listeEquipe = maLecture.listeEquipe();
         maLecture = null;
 
-        ObservableList<equipe> listeEquipeObservable = FXCollections.observableArrayList(listeEquipe);
+        ObservableList<Equipe> listeEquipeObservable = FXCollections.observableArrayList(listeEquipe);
         tvwListeEquipe.setItems(listeEquipeObservable);
         tvwListeEquipe.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         tvwListeEquipe.setEditable(true);
 
-        TableColumn<equipe, String> colonneNomEquipe = new TableColumn<equipe, String>("Nom de l'équipe");
-        TableColumn<equipe, String> colonneVille = new TableColumn<equipe, String>("Ville");
-        TableColumn<equipe, Integer> colonneAnneeDebut = new TableColumn<equipe, Integer>("AnneeDebut");
-        TableColumn<equipe, Integer> colonneAnneeFin = new TableColumn<equipe, Integer>("AnneeFin");
+        TableColumn<Equipe, String> colonneNomEquipe = new TableColumn<Equipe, String>("Nom de l'équipe");
+        TableColumn<Equipe, String> colonneVille = new TableColumn<Equipe, String>("Ville");
+        TableColumn<Equipe, Integer> colonneAnneeDebut = new TableColumn<Equipe, Integer>("AnneeDebut");
+        TableColumn<Equipe, Integer> colonneAnneeFin = new TableColumn<Equipe, Integer>("AnneeFin");
         
         colonneNomEquipe.setCellValueFactory(new PropertyValueFactory<>("NomEquipe"));
         colonneNomEquipe.setCellFactory(TextFieldTableCell.forTableColumn());
-        colonneNomEquipe.setOnEditCommit(new EventHandler<CellEditEvent<equipe, String>>() {
+        colonneNomEquipe.setOnEditCommit(new EventHandler<CellEditEvent<Equipe, String>>() {
             @Override
-            public void handle(CellEditEvent<equipe, String> t) {
+            public void handle(CellEditEvent<Equipe, String> t) {
                 gererEquipe monEcriture = new gererEquipe();
                 boolean estModifieDansBd = monEcriture.modifierNomEquipe(t.getRowValue().getId(), t.getNewValue());
                 monEcriture = null;
 
                 if (estModifieDansBd) {
-                    ((equipe) t.getTableView().getItems().get(
+                    ((Equipe) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())
                         ).setNomEquipe(t.getNewValue());
                 }
@@ -105,15 +100,15 @@ public class Controller {
         colonneVille.setCellValueFactory(new PropertyValueFactory<>("Ville"));
         colonneVille.setMinWidth(75);
         colonneVille.setCellFactory(TextFieldTableCell.forTableColumn());
-        colonneVille.setOnEditCommit(new EventHandler<CellEditEvent<equipe, String>>() {
+        colonneVille.setOnEditCommit(new EventHandler<CellEditEvent<Equipe, String>>() {
             @Override
-            public void handle(CellEditEvent<equipe, String> t) {
+            public void handle(CellEditEvent<Equipe, String> t) {
                 gererEquipe monEcriture = new gererEquipe();
                 boolean estModifieDansBd = monEcriture.modifierVilleEquipe(t.getRowValue().getId(), t.getNewValue());
                 monEcriture = null;
 
                 if (estModifieDansBd) {
-                    ((equipe) t.getTableView().getItems().get(
+                    ((Equipe) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())
                         ).setVille(t.getNewValue());
                 }
@@ -133,9 +128,9 @@ public class Controller {
             }
         }));
 
-        colonneAnneeDebut.setOnEditCommit(new EventHandler<CellEditEvent<equipe, Integer>>() {
+        colonneAnneeDebut.setOnEditCommit(new EventHandler<CellEditEvent<Equipe, Integer>>() {
             @Override
-            public void handle(CellEditEvent<equipe, Integer> t) {
+            public void handle(CellEditEvent<Equipe, Integer> t) {
                 boolean estModifieDansBd = false;
                 if (!t.getNewValue().equals(null)) {
                     gererEquipe monEcriture = new gererEquipe();
@@ -144,7 +139,7 @@ public class Controller {
                 }
 
                 if (estModifieDansBd) {
-                    ((equipe) t.getTableView().getItems().get(
+                    ((Equipe) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())
                         ).setAnneeDebut(t.getNewValue());
                 }
@@ -164,15 +159,15 @@ public class Controller {
             }
         }));
 
-        colonneAnneeFin.setOnEditCommit(new EventHandler<CellEditEvent<equipe, Integer>>() {
+        colonneAnneeFin.setOnEditCommit(new EventHandler<CellEditEvent<Equipe, Integer>>() {
             @Override
-            public void handle(CellEditEvent<equipe, Integer> t) {
+            public void handle(CellEditEvent<Equipe, Integer> t) {
                 gererEquipe monEcriture = new gererEquipe();
                 boolean estModifieDansBd = monEcriture.modifierAnneeFinEquipe(t.getRowValue().getId(), t.getNewValue());
                 monEcriture = null;
 
                 if (estModifieDansBd)
-                ((equipe) t.getTableView().getItems().get(
+                ((Equipe) t.getTableView().getItems().get(
                     t.getTablePosition().getRow())
                     ).setAnneeFin(t.getNewValue());
             }
@@ -228,7 +223,7 @@ public class Controller {
         }
 
         if (estValide) {
-            equipe monAjout = new equipe(txtNomEquipe.getText(), txtVille.getText(), monAnneeDebut);
+            Equipe monAjout = new Equipe(txtNomEquipe.getText(), txtVille.getText(), monAnneeDebut);
             tvwListeEquipe.getItems().add(monAjout);
             gererEquipe monEcriture = new gererEquipe();
             monEcriture.ajouterEquipe(monAjout);

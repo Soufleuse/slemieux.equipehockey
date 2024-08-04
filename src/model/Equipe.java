@@ -3,7 +3,7 @@ package model;
 /**
  * equipe
  */
-public class equipe {
+public class Equipe {
     private int Id = 0;
     private String NomEquipe = "";
     private String Ville = "";
@@ -11,9 +11,9 @@ public class equipe {
     private Integer AnneeFin = null; // Integer = nullable
     private Integer EstDevenueEquipe = null;
 
-    public equipe() {}
+    public Equipe() {}
 
-    public equipe(String pNomEquipe, String pVille, int pAnneeDebut) {
+    public Equipe(String pNomEquipe, String pVille, int pAnneeDebut) {
         this.NomEquipe = pNomEquipe;
         this.Ville = pVille;
         this.AnneeDebut = pAnneeDebut;

@@ -11,7 +11,7 @@
 
 <GridPane xmlns="http://javafx.com/javafx/21.0.4"
           xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="hellofx.Controller"
+          fx:controller="equipehockey.Controller"
           fx:id="maGrille"
           maxHeight="-Infinity"
           maxWidth="-Infinity"
