@@ -150,33 +150,155 @@ public class gererEquipe {
         return retour;
     }
 
-    public boolean modifierEquipe (equipe pEquipe) {
+    /**
+     * Modifie le nom de l'équipe.
+     * @param pId Le Id de l'équipe.
+     * @param pNomEquipe Le nom de l'équipe.
+     * @return true si ça a marché; false autrement.
+     */
+    public boolean modifierNomEquipe (Integer pId, String pNomEquipe) {
         boolean retour = true;
         Connection con = null;
 
         try {
             con = DriverManager.getConnection(urlBD, "lemste", "Misty@00");
             
-            String sql = ("UPDATE Equipe set NomEquipe = ?, Ville = ?, AnneeDebut = ?, AnneeFin = ?, EstDevenueEquipe = ? where Id = ?;");
+            String sql = ("UPDATE Equipe set NomEquipe = ? where Id = ?;");
             PreparedStatement st = con.prepareStatement(sql);
             
-            st.setString(1, pEquipe.getNomEquipe());
-            st.setString(2, pEquipe.getVille());
-            st.setInt(3, pEquipe.getAnneeDebut());
+            st.setString(1, pNomEquipe);
+            st.setInt(2, pId);
 
-            if (pEquipe.getAnneeFin() == null) {
-                st.setInt(4, 0);
-            } else {
-                st.setInt(4, pEquipe.getAnneeFin());
+            st.executeUpdate();
+        }
+        catch (SQLException ex) {
+            retour = false;
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        finally {
+            if (con != null) {
+                try {
+                    con.close();
+                }
+                catch (SQLException ex) {
+                    retour = false;
+                    System.out.println(String.format("Erreur sur le close de la connection; message : ", ex.getMessage()));
+                }
             }
+        }
 
-            if (pEquipe.getEstDevenueEquipe() == null) {
-                st.setInt(5, 0);
-            } else {
-                st.setInt(5, pEquipe.getEstDevenueEquipe());
+        return retour;
+    }
+
+    /**
+     * Modifie la ville de l'équipe.
+     * @param pId Le Id de la ville.
+     * @param pNomVille Le nom de la ville.
+     * @return true si ça a marché; false autrement.
+     */
+    public boolean modifierVilleEquipe (Integer pId, String pNomVille) {
+        boolean retour = true;
+        Connection con = null;
+
+        try {
+            con = DriverManager.getConnection(urlBD, "lemste", "Misty@00");
+            
+            String sql = ("UPDATE Equipe set Ville = ? where Id = ?;");
+            PreparedStatement st = con.prepareStatement(sql);
+            
+            st.setString(1, pNomVille);
+            st.setInt(2, pId);
+
+            st.executeUpdate();
+        }
+        catch (SQLException ex) {
+            retour = false;
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        finally {
+            if (con != null) {
+                try {
+                    con.close();
+                }
+                catch (SQLException ex) {
+                    retour = false;
+                    System.out.println(String.format("Erreur sur le close de la connection; message : ", ex.getMessage()));
+                }
             }
+        }
 
-            st.setInt(6, pEquipe.getId());
+        return retour;
+    }
+
+    /**
+     * Modifie l'année de début de l'équipe.
+     * @param pId Le Id de l'équipe.
+     * @param pAnneeDebut L'année de début de l'équipe.
+     * @return true si ça a marché; false autrement.
+     */
+    public boolean modifierAnneeDebutEquipe (Integer pId, int pAnneeDebut) {
+        boolean retour = true;
+        Connection con = null;
+
+        try {
+            con = DriverManager.getConnection(urlBD, "lemste", "Misty@00");
+            
+            String sql = ("UPDATE Equipe set AnneeDebut = ? where Id = ?;");
+            PreparedStatement st = con.prepareStatement(sql);
+            
+            st.setInt(1, pAnneeDebut);
+            st.setInt(2, pId);
+
+            st.executeUpdate();
+        }
+        catch (SQLException ex) {
+            retour = false;
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        finally {
+            if (con != null) {
+                try {
+                    con.close();
+                }
+                catch (SQLException ex) {
+                    retour = false;
+                    System.out.println(String.format("Erreur sur le close de la connection; message : ", ex.getMessage()));
+                }
+            }
+        }
+
+        return retour;
+    }
+
+    /**
+     * Modifie la date de fin de l'équipe.
+     * @param pId Le Id de l'équipe
+     * @param pAnneeFin L'année de fin de l'équipe.
+     * @return true si ça a marché; false autrement.
+     */
+    public boolean modifierAnneeFinEquipe (Integer pId, Integer pAnneeFin) {
+        boolean retour = true;
+        Connection con = null;
+
+        try {
+            con = DriverManager.getConnection(urlBD, "lemste", "Misty@00");
+            
+            String sql = ("UPDATE Equipe set AnneeFin = ? where Id = ?;");
+            PreparedStatement st = con.prepareStatement(sql);
+
+            if (pAnneeFin == null) {
+                st.setNull(1, java.sql.Types.NULL);
+            } else {
+                st.setInt(1, pAnneeFin.intValue());
+            }
+            
+            st.setInt(2, pId);
 
             st.executeUpdate();
         }
