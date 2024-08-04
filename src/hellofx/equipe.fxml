@@ -24,8 +24,7 @@
         <TableView fx:id="tvwListeEquipe"
                    GridPane.columnIndex="0"
                    GridPane.rowIndex="0"
-                   GridPane.columnSpan="2"
-                   onMouseClicked="#tvwListeEquipe_Clicked" />
+                   GridPane.columnSpan="2" />
         <Label fx:id="lblNomEquipe" GridPane.columnIndex="0" GridPane.rowIndex="1" text="Nom de l'équipe" />
         <TextField fx:id="txtNomEquipe" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <Label fx:id="lblErreurNomEquipe" GridPane.columnIndex="2" GridPane.rowIndex="1" />
@@ -38,12 +37,9 @@
         <Label fx:id="lblAnneeFin" GridPane.columnIndex="0" GridPane.rowIndex="4" text="Année de fin" />
         <TextField fx:id="txtAnneeFin" GridPane.columnIndex="1" GridPane.rowIndex="4" />
         <Label fx:id="lblErreurAnneeFin" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-        <Label fx:id="lblEstDevenuEquipe" GridPane.columnIndex="0" GridPane.rowIndex="5" text="Est devenue équipe" />
-        <ComboBox fx:id="cboEstDevenuEquipe" GridPane.columnIndex="1" GridPane.rowIndex="5" />
         <HBox fx:id="boiteBoutons" GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.columnSpan="2">
             <children>
-                <Button fx:id="btnAjouter" text="Ajouter" onAction="#ajouterEquipe" />
-                <Button fx:id="btnModifier" text="Modifier" onAction="#modifierEquipe" />
+                <Button fx:id="btnAjouter" text="Ajouter" minWidth="75" minHeight="28" onAction="#ajouterEquipe" />
             </children>
         </HBox>
     </children>
