@@ -224,10 +224,13 @@ public class Controller {
 
         if (estValide) {
             Equipe monAjout = new Equipe(txtNomEquipe.getText(), txtVille.getText(), monAnneeDebut);
-            tvwListeEquipe.getItems().add(monAjout);
             gererEquipe monEcriture = new gererEquipe();
-            monEcriture.ajouterEquipe(monAjout);
+            int idEquipe = monEcriture.ajouterEquipe(monAjout);
             monEcriture = null;
+            if(idEquipe != 0) {
+                monAjout.setId(idEquipe);
+                tvwListeEquipe.getItems().add(monAjout);
+            }
         }
     }
 }

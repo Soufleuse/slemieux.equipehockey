@@ -11,12 +11,31 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.io.FileInputStream;
+
 /**
  * Classe gererEquipe
  */
 public class gererEquipe {
 
     private String urlBD = "jdbc:mysql://localhost:3306/LigueHockey";
+    private String utilisateur;
+    private String motdepasse;
+
+    public gererEquipe() {
+        try {
+            FileInputStream lireUtilisateur = new FileInputStream("src/equipehockey/utilisateur.ini");
+            utilisateur = new String(lireUtilisateur.readAllBytes());
+            lireUtilisateur.close();
+
+            FileInputStream lireMotdepasse = new FileInputStream("src/equipehockey/motdepasse.ini");
+            motdepasse = new String(lireMotdepasse.readAllBytes());
+            lireMotdepasse.close();
+        }
+        catch(Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 
     /**
      * Liste les équipes présentes sur la BD.
@@ -28,7 +47,7 @@ public class gererEquipe {
         Connection con = null;
 
         try {
-            con = DriverManager.getConnection(urlBD, "lemste", "Misty@00");
+            con = DriverManager.getConnection(urlBD, utilisateur, motdepasse);
             
             Statement st = con.createStatement();
             String sql = ("SELECT * FROM Equipe;");
@@ -73,12 +92,12 @@ public class gererEquipe {
      * @param pEquipe L'équipe à ajouter
      * @return True si l'équipe a été ajoutée; false autrement.
      */
-    public boolean ajouterEquipe(Equipe pEquipe) {
-        boolean retour = true;
+    public int ajouterEquipe(Equipe pEquipe) {
+        int retour = 0;
         Connection con = null;
 
         try {
-            con = DriverManager.getConnection(urlBD, "lemste", "Misty@00");
+            con = DriverManager.getConnection(urlBD, utilisateur, motdepasse);
             
             String sql = ("INSERT INTO Equipe (Id, NomEquipe, Ville, AnneeDebut, AnneeFin, EstDevenueEquipe) VALUES (?, ?, ?, ?, NULL, NULL);");
             PreparedStatement st = con.prepareStatement(sql);
@@ -90,9 +109,9 @@ public class gererEquipe {
             st.setInt(4, pEquipe.getAnneeDebut());
 
             st.executeUpdate();
+            retour = idMaxPlusUn;
         }
         catch (SQLException ex) {
-            retour = false;
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
@@ -103,7 +122,6 @@ public class gererEquipe {
                     con.close();
                 }
                 catch (SQLException ex) {
-                    retour = false;
                     System.out.println(String.format("Erreur sur le close de la connection; message : ", ex.getMessage()));
                 }
             }
@@ -122,7 +140,7 @@ public class gererEquipe {
         Connection con = null;
 
         try {
-            con = DriverManager.getConnection(urlBD, "lemste", "Misty@00");
+            con = DriverManager.getConnection(urlBD, utilisateur, motdepasse);
             
             String sql = ("SELECT MAX(Id) FROM Equipe;");
             PreparedStatement st = con.prepareStatement(sql);
@@ -161,7 +179,7 @@ public class gererEquipe {
         Connection con = null;
 
         try {
-            con = DriverManager.getConnection(urlBD, "lemste", "Misty@00");
+            con = DriverManager.getConnection(urlBD, utilisateur, motdepasse);
             
             String sql = ("UPDATE Equipe set NomEquipe = ? where Id = ?;");
             PreparedStatement st = con.prepareStatement(sql);
@@ -203,7 +221,7 @@ public class gererEquipe {
         Connection con = null;
 
         try {
-            con = DriverManager.getConnection(urlBD, "lemste", "Misty@00");
+            con = DriverManager.getConnection(urlBD, utilisateur, motdepasse);
             
             String sql = ("UPDATE Equipe set Ville = ? where Id = ?;");
             PreparedStatement st = con.prepareStatement(sql);
@@ -245,7 +263,7 @@ public class gererEquipe {
         Connection con = null;
 
         try {
-            con = DriverManager.getConnection(urlBD, "lemste", "Misty@00");
+            con = DriverManager.getConnection(urlBD, utilisateur, motdepasse);
             
             String sql = ("UPDATE Equipe set AnneeDebut = ? where Id = ?;");
             PreparedStatement st = con.prepareStatement(sql);
@@ -287,7 +305,7 @@ public class gererEquipe {
         Connection con = null;
 
         try {
-            con = DriverManager.getConnection(urlBD, "lemste", "Misty@00");
+            con = DriverManager.getConnection(urlBD, utilisateur, motdepasse);
             
             String sql = ("UPDATE Equipe set AnneeFin = ? where Id = ?;");
             PreparedStatement st = con.prepareStatement(sql);
